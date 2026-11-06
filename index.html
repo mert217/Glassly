@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="tr"><head><meta charset="utf-8"><title>Glassly</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+:root{--bg:#070d1f;--g:rgba(120,160,255,.07);--gb:rgba(150,185,255,.16);--t:#e8eefc;--m:#8fa1c7;--a:#5ea0ff;--a2:#8c7bff;--ok:#4fd1a5;--bad:#ff7a90}
+*{box-sizing:border-box}html,body{height:100%;margin:0}
+body{font:15px/1.5 system-ui,"Segoe UI",sans-serif;color:var(--t);overflow:hidden;
+background:radial-gradient(1000px 600px at 12% -10%,rgba(94,160,255,.22),transparent 60%),radial-gradient(900px 600px at 100% 110%,rgba(140,123,255,.18),transparent 60%),var(--bg)}
+.glass{background:var(--g);border:1px solid var(--gb);backdrop-filter:blur(18px) saturate(140%);-webkit-backdrop-filter:blur(18px) saturate(140%);border-radius:18px;box-shadow:0 8px 30px rgba(0,0,0,.35),inset 0 1px 0 rgba(255,255,255,.06)}
+#login,#app{height:100%}#login{display:grid;place-items:center}
+.card{width:min(380px,92vw);padding:30px;animation:in .5s ease}@keyframes in{from{opacity:0;transform:translateY(14px)}}
+h1{margin:0 0 4px;font-size:30px;letter-spacing:-.5px}h1,.logo{background:linear-gradient(90deg,var(--a),var(--a2));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--m);margin:0 0 18px}
+input,textarea{width:100%;margin:6px 0 12px;padding:11px 14px;border-radius:12px;border:1px solid var(--gb);background:rgba(255,255,255,.04);color:var(--t);font:inherit;outline:0}
+input[type=checkbox]{width:auto;margin:0 6px 0 0}input:focus,textarea:focus{border-color:var(--a)}
+label{font-size:13px;color:var(--m)}
+button{font:inherit;cursor:pointer;border:0;border-radius:12px;padding:10px 16px;color:#fff;font-weight:600;background:linear-gradient(90deg,var(--a),var(--a2));transition:.15s}
+button:hover{filter:brightness(1.12)}button.full{width:100%;margin-top:6px}
+button.ghost{background:var(--g);color:var(--t);border:1px solid var(--gb)}button.ghost.on{border-color:var(--a);color:var(--a)}
+.err{color:var(--bad);min-height:20px;font-size:13px}
+#app{display:none;grid-template-columns:220px 1fr;gap:14px;padding:14px}
+nav{padding:16px 10px;display:flex;flex-direction:column;gap:4px;overflow:auto}
+nav .logo{font-size:22px;font-weight:700;padding:4px 12px 12px}
+nav a{padding:10px 14px;border-radius:12px;cursor:pointer;color:var(--m);transition:.15s}
+nav a:hover{background:var(--g);color:var(--t)}nav a.on{background:rgba(94,160,255,.16);color:#fff;box-shadow:inset 3px 0 var(--a)}nav .sp{flex:1}
+main{overflow:auto;padding:2px 6px 24px;scrollbar-width:thin}
+.top{display:flex;align-items:center;gap:12px;margin-bottom:14px}.top h2{margin:0;flex:1;font-size:24px}
+h3{margin:22px 0 10px;font-size:15px;color:var(--m);font-weight:600;text-transform:uppercase;letter-spacing:.06em}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.item{padding:14px 16px;transition:.2s}.item.click{cursor:pointer}.item.click:hover{border-color:var(--a);transform:translateY(-2px)}
+.item b{display:block}small,.mu{color:var(--m)}
+.pill{display:inline-block;padding:2px 10px;border-radius:99px;font-size:12px;background:rgba(94,160,255,.18);margin:6px 6px 0 0}
+.pill.ok{background:rgba(79,209,165,.18);color:var(--ok)}.pill.bad{background:rgba(255,122,144,.18);color:var(--bad)}
+.kpis{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px}
+.kpi{padding:14px 16px}.kpi .v{font-size:26px;font-weight:700}.kpi .l{font-size:12px;color:var(--m)}
+.tw{overflow:auto;padding:6px}table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{padding:9px 10px;text-align:left;border-bottom:1px solid var(--gb);vertical-align:top}th{color:var(--m);font-weight:600;font-size:12px;text-transform:uppercase}
+.sch td{min-width:118px;border:1px solid var(--gb);border-radius:6px}.sch td.slot{min-width:92px;color:var(--a);font-weight:600;white-space:nowrap}
+.sch td.cur{background:rgba(94,160,255,.22);box-shadow:inset 0 0 0 2px var(--a)}.sch th.today{color:var(--a)}
+.sch .t{font-size:12px;color:var(--m)}
+.bar{height:8px;border-radius:99px;background:rgba(255,255,255,.08);overflow:hidden;margin-top:6px}.bar i{display:block;height:100%;background:linear-gradient(90deg,var(--a),var(--a2))}
+.empty{color:var(--m);padding:30px;text-align:center}.tabs{display:flex;gap:8px;margin-bottom:12px;flex-wrap:wrap}
+.spin{width:32px;height:32px;border-radius:50%;border:3px solid var(--gb);border-top-color:var(--a);animation:sp 1s linear infinite;margin:40px auto}@keyframes sp{to{transform:rotate(360deg)}}
+.ov{position:fixed;inset:0;background:rgba(3,6,16,.7);display:grid;place-items:center;z-index:9;padding:16px}
+.mod{width:min(640px,100%);max-height:88vh;overflow:auto;padding:22px;background:#0d1631}.mod h3{margin-top:0;color:var(--t);text-transform:none;font-size:20px}
+.msg{white-space:pre-wrap;margin-top:10px}a.f{display:block;padding:9px 12px;margin:6px 0;border-radius:10px;border:1px solid var(--gb);color:var(--t);text-decoration:none}a.f:hover{border-color:var(--a)}
+.res div{padding:8px 10px;border-radius:10px;cursor:pointer}.res div:hover,.res .sel{background:rgba(94,160,255,.2)}
+@media(max-width:760px){#app{grid-template-columns:1fr}nav{flex-direction:row}nav .logo,nav .sp{display:none}}
+</style></head><body>
+<section id="login"><div class="card glass">
+<h1>Glassly</h1><p class="sub">Okul panelin, cam kadar berrak.</p>
+<label>Okul adresi</label><input id="base" value="https://tedemkolejiobs.com" autocomplete="off">
+<label>TC kimlik no</label><input id="tc" inputmode="numeric" autocomplete="username">
+<label>Şifre</label><input id="pw" type="password" autocomplete="current-password">
+<label id="remWrap"><input id="rem" type="checkbox">Beni hatırla (sistem anahtarlığında, şifreli)</label>
+<div class="err" id="err"></div><button class="full" id="go">Giriş yap</button></div></section>
+<section id="app"><nav class="glass"><div class="logo">Glassly</div>
+<a data-v="home">🏠 Ana sayfa</a><a data-v="schedule">📅 Ders programı</a><a data-v="exams">📊 Sınavlar</a><a data-v="homework">📝 Ödevler</a>
+<a data-v="mail">✉️ Mesajlar</a><a data-v="attendance">🗓️ Devamsızlık</a><a data-v="food">🍽️ Yemekhane</a><div class="sp"></div><a id="out">🚪 Çıkış</a></nav>
+<main id="main"></main></section>
+<script>
+const TOKEN="__TOKEN__",$=s=>document.querySelector(s),hd={"X-Glassly-Token":TOKEN,"Content-Type":"application/json"};
+const get=u=>fetch("/api/"+u,{headers:hd}).then(r=>r.json());
+const post=(u,b)=>fetch("/api/"+u,{method:"POST",headers:hd,body:JSON.stringify(b||{})}).then(r=>r.json());
+const q=o=>new URLSearchParams(o).toString();
+function el(t,c,x){const e=document.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+const pick=(o,ks)=>{for(const k of ks)if(o&&o[k]!=null&&o[k]!=="")return String(o[k]).replace(/<[^>]*>/g,"");return""};
+const num=v=>{const n=parseFloat(String(v).replace(",","."));return isNaN(n)?null:n};
+async function enter(auto){$("#err").textContent="";const b=auto?{auto:1}:{base:$("#base").value,tc:$("#tc").value.trim(),pw:$("#pw").value,remember:$("#rem").checked};
+$("#go").textContent="Bağlanıyor…";let r;try{r=await post("login",b)}catch(e){r={}}$("#go").textContent="Giriş yap";
+if(!r.success){if(!auto)$("#err").textContent="Giriş başarısız. Bilgileri kontrol et.";return}
+$("#pw").value="";$("#login").style.display="none";$("#app").style.display="grid";show("home")}
+$("#go").onclick=()=>enter(false);$("#pw").onkeydown=e=>{if(e.key==="Enter")enter(false)};
+$("#out").onclick=async()=>{await post("logout");location.reload()};
+get("saved").then(s=>{if(!s.keyring)$("#remWrap").style.display="none";if(s.base)$("#base").value=s.base;if(s.tc)$("#tc").value=s.tc;if(s.saved)enter(true)});
+document.querySelectorAll("nav a[data-v]").forEach(a=>a.onclick=()=>show(a.dataset.v));
+async function show(v){document.querySelectorAll("nav a").forEach(a=>a.classList.toggle("on",a.dataset.v===v));
+const m=$("#main");m.replaceChildren(el("div","spin"));try{await V[v](m)}catch(e){m.replaceChildren(el("div","empty","Veri alınamadı: "+e.message))}}
+const head=(m,t,extra)=>{m.replaceChildren();const d=el("div","top");d.append(el("h2","",t));if(extra)d.append(extra);m.append(d)};
+const card=(a,b,pills,cl)=>{const d=el("div","item glass"+(cl?" click":""));d.append(el("b","",a));if(b)d.append(el("small","",b));if(pills&&pills.length){d.append(document.createElement("br"));pills.filter(p=>p&&p[0]).forEach(p=>d.append(el("span","pill "+(p[1]||""),p[0])))}return d};
+const empty=(m,t)=>m.append(el("div","empty",t));
+const tbl=(cols,rows)=>{const w=el("div","tw glass"),t=el("table"),h=el("tr");cols.forEach(c=>h.append(el("th","",c)));t.append(h);
+rows.forEach(r=>{const tr=el("tr");r.forEach(c=>tr.append(el("td","",c==null?"":c)));t.append(tr)});w.append(t);return w};
+function modal(build){const o=el("div","ov"),b=el("div","mod glass");o.append(b);o.onclick=e=>{if(e.target===o)o.remove()};build(b,()=>o.remove());document.body.append(o)}
+async function sched(){const r=await get("home"),s=((r.data||{}).lessonSchedule||{}).data||{};return{x:s.xInfo||[],y:s.yInfo||[],l:s.data||[],raw:r.data||{}}}
+const todayIdx=()=>(new Date().getDay()+6)%7+1;
+function nowIn(slot){const m=/(\d+):(\d+)\s*-\s*(\d+):(\d+)/.exec(slot||"");if(!m)return false;const n=new Date().getHours()*60+new Date().getMinutes();return n>=+m[1]*60+ +m[2]&&n<=+m[3]*60+ +m[4]}
+const V={
+async home(m){const S=await sched();head(m,"Merhaba 👋");const di=todayIdx();m.append(el("h3","","Bugünün dersleri"));const g=el("div","grid");
+S.l.filter(l=>l.y===di).sort((a,b)=>a.x-b.x).forEach(l=>{const t=l.text||[],slot=(S.x[l.x-1]||["?"])[0];const c=card((t[1]||"-").trim(),"👤 "+(t[0]||"-").trim(),[["⏰ "+slot]]);if(nowIn(slot))c.style.borderColor="var(--a)";g.append(c)});
+g.children.length?m.append(g):empty(m,"Bugün ders görünmüyor 🌿");
+const an=S.raw.announcementList||[];if(an.length){m.append(el("h3","","Duyurular"));const g2=el("div","grid");an.slice(0,8).forEach(a=>g2.append(card(pick(a,["title","headerTitle","name"])||"Duyuru",pick(a,["date","startDate"]),[[pick(a,["text","content","description"]).slice(0,90)]])));m.append(g2)}},
+async schedule(m){const S=await sched();head(m,"Ders programı");if(!S.y.length)return empty(m,"Ders programı alınamadı.");
+const t=el("table","sch"),h=el("tr");h.append(el("th","","Saat"));S.y.forEach((y,i)=>{const th=el("th",i+1===todayIdx()?"today":"",y[0]);h.append(th)});t.append(h);
+S.x.forEach((xs,xi)=>{const tr=el("tr"),slot=xs[0];tr.append(el("td","slot",slot));
+S.y.forEach((_,yi)=>{const l=S.l.find(z=>z.x===xi+1&&z.y===yi+1),td=el("td",l&&yi+1===todayIdx()&&nowIn(slot)?"cur":"");
+if(l){const tx=l.text||[];td.append(el("div","",(tx[1]||"-").trim()),el("div","t",(tx[0]||"").trim()))}tr.append(td)});t.append(tr)});
+const w=el("div","tw glass");w.append(t);m.append(w)},
+async exams(m){const r=await get("exams");head(m,"Sınavlar");const k=r.kpi||{},ex=r.exams||[],dbs=r.dbs||[];
+const K=[["Sınav sayısı",k.examCount||ex.length],["Ortalama puan",k.avgPoint],["Son puan",k.lastPoint],["En yüksek puan",k.maxPoint],["Ortalama başarı",k.avgSuccess!=null?"%"+k.avgSuccess:""]].filter(z=>z[1]!==""&&z[1]!=null);
+const kg=el("div","kpis");K.forEach(([l,v])=>{const d=el("div","kpi glass");d.append(el("div","v",String(v)),el("div","l",l));kg.append(d)});if(K.length)m.append(kg);
+const ls=r.lessonSuccess||[];if(ls.length){m.append(el("h3","","Ders başarı oranı"));const g=el("div","grid");
+ls.forEach(l=>{const rate=num(l.successRate!=null?l.successRate:l.rate)||0,d=card(pick(l,["lesson","name","title"])||"Ders",null,[]);d.append(el("span","pill",rate.toFixed(0)+"%"));const b=el("div","bar"),i=el("i");i.style.width=Math.min(100,rate)+"%";b.append(i);d.append(b);g.append(d)});m.append(g)}
+m.append(el("h3","","Deneme sınavları"));
+const rows=ex.map(e=>{const d=num(e.dogru),y=num(e.yanlis),n=num(e.questionCount),pct=(d!=null&&n)?"%"+(100*d/n).toFixed(0):"";return[e.examName,e.examDate,e.point,e.net,(d!=null?d:"")+" / "+(y!=null?y:""),pct,e.SD,e.GD]});
+rows.length?m.append(tbl(["Sınav","Tarih","Puan","Net","Doğru / Yanlış","Oran","Sınıf D.","Genel D."],rows)):empty(m,"Deneme sınavı bulunamadı.");
+if(dbs.length){m.append(el("h3","","Tarama sınavları"));m.append(tbl(["Sınav","Tarih","Puan","Net","Doğru / Yanlış","Oran"],dbs.map(d=>{let D=0,Y=0,S=0;for(let i=1;i<=10;i++){D+=+d["D"+i]||0;Y+=+d["Y"+i]||0;S+=+d["SS"+i]||0}return[d.sinavAd,d.sinavTarih,d.Puan,(D-Y/3).toFixed(2),D+" / "+Y,S?"%"+(100*D/S).toFixed(0):""]})))}},
+async homework(m){const r=await get("homework"),L=Array.isArray(r)?r:(r.data||[]);head(m,"Ödevler");const g=el("div","grid");
+L.forEach(h=>{const c=card(pick(h,["title"])||"Ödev",[pick(h,["lesson"]),pick(h,["teaNameSurname"])].filter(Boolean).join(" • "),[[pick(h,["statusName"])],[pick(h,["endDate"])&&"📆 "+pick(h,["endDate"])],[pick(h,["attachFileCount"])&&"📎 "+pick(h,["attachFileCount"])]],1);c.onclick=()=>hwOpen(h);g.append(c)});
+L.length?m.append(g):empty(m,"Hiç ödev yok 🎉")},
+async mail(m){const nb=el("button","","✍️ Yeni mesaj");nb.onclick=()=>compose();const r=await get("mail");head(m,"Mesajlar",nb);const tabs=el("div","tabs"),box=el("div","grid");m.append(tabs,box);
+const draw=(L,bt)=>{box.replaceChildren();[...tabs.children].forEach(b=>b.classList.toggle("on",b===bt));L.forEach(x=>{const c=card(pick(x,["mailTitle"])||"(başlıksız)",pick(x,["sender","receiver","recipient"])+" • "+pick(x,["sendDate","date"]),[[pick(x,["mailPreview"]).slice(0,80)]],1);
+c.onclick=async()=>{if(c.dataset.o){c.querySelector(".msg").remove();delete c.dataset.o;return}const z=await post("mailopen",{id:x.id});const t=pick((z.data||{}).mailContent||{},["mailContent","content","text"])||"İçerik alınamadı.";c.dataset.o=1;c.append(el("div","msg",t))};box.append(c)});if(!L.length)empty(box,"Mesaj yok.")};
+[["Gelen",r.inbox||[]],["Giden",r.sent||[]]].forEach(([n,L],i)=>{const b=el("button","ghost",n);b.onclick=()=>draw(L,b);tabs.append(b)});draw(r.inbox||[],tabs.firstChild)},
+async attendance(m){const r=await get("attendance"),L=r.list||[];head(m,(r.periods&&r.periods[0]&&r.periods[0].description||"Devamsızlık").trim());
+const by={};L.forEach(a=>{const k=pick(a,["lesson"])||"Ders";by[k]=(by[k]||0)+1});
+const kg=el("div","kpis"),d=el("div","kpi glass");d.append(el("div","v",String(L.length)),el("div","l","Toplam ders saati devamsızlık"));kg.append(d);m.append(kg);
+if(!L.length)return empty(m,"Devamsızlık kaydın yok ✨");
+m.append(el("h3","","Derslere göre"));const g=el("div","grid");Object.entries(by).sort((a,b)=>b[1]-a[1]).forEach(([k,v])=>g.append(card(k,null,[[v+" saat","bad"]])));m.append(g);
+m.append(el("h3","","Tüm kayıtlar"));m.append(tbl(["Tarih","Ders","Saat","Öğretmen","Tür","Not"],L.map(a=>[pick(a,["absenceDate"]),pick(a,["lesson"]),pick(a,["lessonNo"]),pick(a,["teaNameSurname"]),pick(a,["description"])||"Devamsız",pick(a,["note"])])))},
+async food(m){const a=el("a","","PDF'i yeni sekmede aç");const u="/dl?"+q({kind:"food",n:"yemek-listesi.pdf",t:TOKEN});a.href=u;a.target="_blank";a.style.color="var(--a)";head(m,"Yemekhane",a);
+const f=el("iframe");f.src=u;f.style.cssText="width:100%;height:calc(100vh - 130px);border:1px solid var(--gb);border-radius:14px;background:#fff";m.append(f)}};
+function files(b,title,L,hid,ft){if(!L||!L.length)return;b.append(el("h3","",title));L.forEach(f=>{const a=el("a","f","📎 "+(f.fileName||"Dosya"));a.href="/dl?"+q({id:hid,fid:f.fileId||"",h:f.fileHash||"",ft,n:f.fileName||"dosya",t:TOKEN});a.target="_blank";b.append(a)})}
+async function hwOpen(h){modal(async(b,close)=>{b.append(el("h3","",pick(h,["title"])||"Ödev"),el("div","spin"));const r=await get("hwdetail?id="+encodeURIComponent(h.id)),d=(r&&r.data)||{};
+b.replaceChildren(el("h3","",pick(h,["title"])||"Ödev"),el("small","",[pick(h,["lesson"]),pick(h,["teaNameSurname"]),pick(h,["endDate"])].filter(Boolean).join(" • ")));
+if(d.konuAd)b.append(el("div","pill",d.konuAd));
+b.append(el("div","msg",pick(d,["description"])||"Öğretmen açıklama eklememiş."));
+if(d.teacherComment){b.append(el("h3","","Öğretmen notu"),el("div","msg",pick(d,["teacherComment"])))}
+files(b,"Ek dosyalar",d.attachFiles,h.id,"attachFiles");files(b,"Cevap anahtarı",d.answerFiles,h.id,"answerFiles");files(b,"Teslim ettiğin dosyalar",d.studentAttachFiles,h.id,"studentAttachFiles");
+const c=el("button","ghost","Kapat");c.style.marginTop="14px";c.onclick=close;b.append(c)})}
+function compose(){modal((b,close)=>{let rc=null;b.append(el("h3","","Yeni mesaj"));
+const s=el("input");s.placeholder="Alıcı ara (öğretmen adı)…";const res=el("div","res"),pk=el("small","","Alıcı seçilmedi");
+let tm;s.oninput=()=>{clearTimeout(tm);tm=setTimeout(async()=>{if(s.value.length<2)return;const r=await get("receivers?q="+encodeURIComponent(s.value));res.replaceChildren();(r.data||[]).forEach(x=>{const d=el("div","",x.nameSurname+" • "+(x.type||""));d.onclick=()=>{if(!x.userId&&x.id){const r=String(x.id);x={...x,userType:r.length>1?r[0]:3,userId:r.length>1?r.slice(1):r}}rc=x;pk.textContent="Alıcı: "+x.nameSurname;res.replaceChildren()};res.append(d)})},300)};
+const t=el("input");t.placeholder="Başlık (en az 5 karakter)";const c=el("textarea");c.rows=7;c.placeholder="Mesaj (en az 10 karakter)";const e=el("div","err");
+const go=el("button","","Gönder");go.onclick=async()=>{e.textContent="";if(!rc)return e.textContent="Önce alıcı seç.";if(t.value.length<5||c.value.length<10)return e.textContent="Başlık en az 5, mesaj en az 10 karakter olmalı.";
+go.textContent="Gönderiliyor…";const r=await post("send",{title:t.value,content:c.value,type:rc.userType,id:rc.userId});go.textContent="Gönder";
+if(r&&r.success){close();show("mail")}else e.textContent=(r&&(r.msg||r.error))||"Gönderilemedi."};
+b.append(s,res,pk,el("br"),t,c,e,go)})}
+</script></body></html>
