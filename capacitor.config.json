@@ -1,0 +1,10 @@
+{
+  "appId": "app.glassly.mobile",
+  "appName": "Glassly",
+  "webDir": "www",
+  "server": { "androidScheme": "https" },
+  "plugins": {
+    "CapacitorHttp": { "enabled": true },
+    "CapacitorCookies": { "enabled": true }
+  }
+}
